@@ -1,0 +1,97 @@
+# Homework
+
+## 1. Create Rmarkdown
+
+## 2. Create 5 charts
+
+## 3. Data = mpg
+
+## Explore data
+
+```{r}
+library(ggplot2)
+library(patchwork)
+library(tidyverse)
+library(dplyr)
+head(mpg)
+```
+
+
+1.In which year is the engine capacity greater than the other? Does it affect horsepower? Moreover, the higher the horsepower, the more fuel consumption. 
+In 2008 the engine capacity
+
+```{r}
+mpg %>%
+  group_by(year) %>%
+  summarise(avg_displ = mean(displ)) %>%
+  ggplot(aes(x = factor(year), y = avg_displ)) +
+  geom_col(fill = "lightblue") +
+  labs(title = "Average Displacement in 1998 vs 2008",
+       x = "Year",
+       y = "Average Displacement") +
+  theme_minimal()
+```
+
+Q2.The relationship between Displ and Cyl in an engine is that as the engine becomes larger, the number of cylinders also increases
+
+```{r}
+ggplot(mpg, aes(x = displ, y = cyl,color = cty)) +
+  geom_point() +
+  geom_smooth(formula = y ~ x)+
+  labs(title = "Scatter plot of Engine Displacement vs. Number of Cylinders",
+       x = "Engine Displacement (liters)",
+       y = "Number of Cylinders") +
+  theme_minimal()
+```
+
+Q3.Which type of vehicle consumes the most fuel when driving in the city? 
+It is a 2-seater car that consumes the most fuel.
+
+```{r}
+mpg %>%
+  ggplot(aes(x = reorder(class, cty), y = cty)) +
+  geom_col(fill = "#705430") +
+  labs(
+    title = "Type Car and city miles per gallon",
+    x = "Type of Cars",
+    y = "City miles per gallon"
+  ) +
+  theme_minimal()
+```
+
+Q4.The type of power transmission or gearbox affects fuel consumption for highway miles per gallon
+
+```{r}
+mpg %>%
+  ggplot(aes(x = trans, y = hwy  ))+
+  geom_boxplot(color = "#48365c") +
+  labs(title = "Transmission type affects fuel efficiency, especially for highway driving",
+  x = "Type of transmission",
+  y = "Engine displacement") +
+  theme_minimal()
+```
+
+Q5.The type of power transmission or gearbox affects fuel consumption for city miles per gallon.
+```{r}
+mpg %>%
+  ggplot(aes(x = trans, y = cty ))+
+  geom_boxplot(color = "#5ab5cc") +
+  labs(title = "Transmission type affects fuel efficiency, especially for City miles per gallon",
+  x = "Type of transmission",
+  y = "City miles per gallon") +
+  theme_minimal()
+```
+
+Q6.The type of power transmission or gearbox has an impact on fuel consumption for both city miles per gallon and highway miles per gallon.
+
+```{r}
+mpg %>%
+  ggplot(aes(x = trans, y = cty)) +
+  geom_boxplot(aes(color = "City MPG")) +
+  geom_boxplot(aes(x = trans, y = hwy, color = "Highway MPG")) +
+  labs(title = "Distribution of City and Highway MPG Across Vehicle Classes",
+       x = "Vehicle Class",
+       y = "Miles Per Gallon") +
+  theme_minimal()
+
+```
